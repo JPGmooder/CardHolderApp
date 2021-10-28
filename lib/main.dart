@@ -218,7 +218,7 @@ class _MyAppState extends State<MyApp> {
                 padding: EdgeInsets.only(top: 10),
               ),
               SizedBox(
-                width: 350,
+                width: 100,
                 child: TextField(
                   style: TextStyle(color: Colors.white),
                   maxLength: 5,
