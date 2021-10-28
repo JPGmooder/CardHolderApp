@@ -66,6 +66,10 @@ class _MyAppState extends State<MyApp> {
   String cardholder = 'CARD OWNER';
   String numbercard = '**** **** **** ****';
   String date = '00/00';
+  String cvc = '***';
+  bool _isObscureForNumberCard = true;
+  bool _isObscureForCvcCard = true;
+  dynamic ColorCard = Colors.redAccent; //фича пока не работает
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +83,7 @@ class _MyAppState extends State<MyApp> {
           child: Column(
             children: [
               Padding(
-                padding: EdgeInsets.only(top: 30),
+                padding: EdgeInsets.only(top: 50),
               ),
               Container(
                 decoration: BoxDecoration(
@@ -95,16 +99,27 @@ class _MyAppState extends State<MyApp> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(
-                          width: 50,
-                          height: 50,
-                          child: Image.asset(
-                            'img/chip.png',
-                            color: Colors.white,
-                          ),
+                        Row(
+                          children: [
+                            Container(
+                              width: 50,
+                              height: 50,
+                              child: Image.asset(
+                                'img/chip.png',
+                                color: Colors.white,
+                              ),
+                            ),
+                            // Padding(
+                            //   padding: EdgeInsets.only(left: 200),
+                            // ),
+                            // IconButton(
+                            //   onPressed: () {},
+                            //   icon: Icon(Icons.edit, color: Colors.white),
+                            // ), //фича пока не работает
+                          ],
                         ),
                         Text(
-                          numbercard,
+                          numbercard.replaceAll(RegExp(r'.(?=.{15})'), '*'),
                           style: TextStyle(color: Colors.white, fontSize: 30),
                         ),
                         Row(
@@ -130,21 +145,39 @@ class _MyAppState extends State<MyApp> {
                         Padding(
                           padding: EdgeInsets.only(top: 40),
                         ),
-                        Text(
-                          cardholder,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold),
-                        )
+                        Row(
+                          children: [
+                            Text(
+                              cardholder,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 30),
+                            ),
+                            Text(
+                              'CVC',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.normal),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 10),
+                            ),
+                            Text(
+                              cvc.replaceAll(RegExp(r'.(?=.{0})'), '*'),
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
                       ],
                     ),
-                    // decoration: BoxDecoration(
-                    //   borderRadius: BorderRadius.circular(10),
-                    //   color: Colors.redAccent,
-                    // image: DecorationImage(
-                    //   image: AssetImage("img/chip.png"),
-                    // ),
                   ),
                 ),
               ),
@@ -154,6 +187,7 @@ class _MyAppState extends State<MyApp> {
               SizedBox(
                 width: 350,
                 child: TextField(
+                  obscureText: _isObscureForNumberCard,
                   maxLength: 19,
                   style: TextStyle(color: Colors.white),
                   keyboardType: TextInputType.number,
@@ -165,6 +199,19 @@ class _MyAppState extends State<MyApp> {
                     border: OutlineInputBorder(),
                     labelStyle: TextStyle(color: Colors.white),
                     labelText: 'Number',
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          _isObscureForNumberCard = !_isObscureForNumberCard;
+                        });
+                      },
+                      icon: Icon(
+                        _isObscureForNumberCard
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Colors.white,
+                      ),
+                    ),
                     enabledBorder: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.white),
                     ),
@@ -182,72 +229,135 @@ class _MyAppState extends State<MyApp> {
                   },
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(top: 10),
+              Column(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 10),
+                  ),
+                  SizedBox(
+                    width: 350,
+                    child: TextField(
+                      maxLength: 25,
+                      style: TextStyle(color: Colors.white),
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(
+                            RegExp(r'[a-zA-z+|\s]'))
+                      ],
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelStyle: TextStyle(color: Colors.white),
+                        labelText: 'Card Owner',
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                      ),
+                      onChanged: (val) {
+                        setState(() {
+                          cardholder = val.toUpperCase();
+                          if (val == '') {
+                            cardholder = 'CARD OWNER';
+                          }
+                        });
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 10),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SizedBox(
+                        width: 160,
+                        child: TextField(
+                          style: TextStyle(color: Colors.white),
+                          maxLength: 5,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                            new CustomInputFormatter2()
+                          ],
+                          keyboardType: TextInputType.datetime,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelStyle: TextStyle(color: Colors.white),
+                            labelText: 'Date',
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                          ),
+                          onChanged: (val) {
+                            setState(() {
+                              date = val.toUpperCase();
+                              if (val == '') {
+                                date = '00/00';
+                              }
+                            });
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        width: 160,
+                        child: TextField(
+                          obscureText: _isObscureForCvcCard,
+                          style: TextStyle(color: Colors.white),
+                          maxLength: 3,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelStyle: TextStyle(color: Colors.white),
+                            labelText: 'Cvc',
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  _isObscureForCvcCard = !_isObscureForCvcCard;
+                                });
+                              },
+                              icon: Icon(
+                                _isObscureForCvcCard
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: Colors.white,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                          ),
+                          onChanged: (val) {
+                            setState(() {
+                              cvc = val.toUpperCase();
+                              if (val == '') {
+                                cvc = '***';
+                              }
+                            });
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              SizedBox(
+              Container(
+                //пока не работает
                 width: 350,
-                child: TextField(
-                  maxLength: 25,
-                  style: TextStyle(color: Colors.white),
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r'[a-zA-z+|\s]'))
-                  ],
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelStyle: TextStyle(color: Colors.white),
-                    labelText: 'Card Owner',
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                    ),
-                  ),
-                  onChanged: (val) {
-                    setState(() {
-                      cardholder = val.toUpperCase();
-                      if (val == '') {
-                        cardholder = 'CARD OWNER';
-                      }
-                    });
-                  },
+                child: ElevatedButton(
+                  onPressed: () {},
+                  child: Text('Add card'),
+                  style: ElevatedButton.styleFrom(
+                      elevation: 10,
+                      primary: Colors.indigoAccent,
+                      textStyle: TextStyle(fontWeight: FontWeight.bold)),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: 10),
-              ),
-              SizedBox(
-                width: 100,
-                child: TextField(
-                  style: TextStyle(color: Colors.white),
-                  maxLength: 5,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    new CustomInputFormatter2()
-                  ],
-                  keyboardType: TextInputType.datetime,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelStyle: TextStyle(color: Colors.white),
-                    labelText: 'Date',
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                    ),
-                  ),
-                  onChanged: (val) {
-                    setState(() {
-                      date = val.toUpperCase();
-                      if (val == '') {
-                        date = '00/00';
-                      }
-                    });
-                  },
-                ),
-              ),
+              )
             ],
           ),
         )),
