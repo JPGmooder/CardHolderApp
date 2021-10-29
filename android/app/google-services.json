@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "441659336938",
+    "project_id": "cardholderflutter",
+    "storage_bucket": "cardholderflutter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:441659336938:android:c658038779618e1603cf93",
+        "android_client_info": {
+          "package_name": "com.tematerbikistik.cardholder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "441659336938-2uep84oau1qr6q8jdr41eki3998pp16d.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAYfkKZAnwNuk4QFxLEETk2dunz3wiO8Yo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "441659336938-2uep84oau1qr6q8jdr41eki3998pp16d.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
