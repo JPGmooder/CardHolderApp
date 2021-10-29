@@ -69,14 +69,14 @@ class _MyAppState extends State<MyApp> {
   String cvc = '***';
   bool _isObscureForNumberCard = true;
   bool _isObscureForCvcCard = true;
-  dynamic ColorCard = Colors.redAccent; //фича пока не работает
+  int ColorCard = 0xffFF7B7B; //фича пока не работает
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Карточки',
       home: Scaffold(
-        backgroundColor: Colors.blueGrey,
+        backgroundColor: Color(0xff445671),
         resizeToAvoidBottomInset: false,
         body: Center(
             child: SafeArea(
@@ -86,12 +86,11 @@ class _MyAppState extends State<MyApp> {
                 padding: EdgeInsets.only(top: 50),
               ),
               Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.redAccent),
                 child: Card(
-                  elevation: 20,
-                  color: Colors.redAccent,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16)),
+                  elevation: 10,
+                  color: Color(0xffFF7B7B),
                   child: Container(
                     width: 350,
                     height: 200,
@@ -198,7 +197,7 @@ class _MyAppState extends State<MyApp> {
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     labelStyle: TextStyle(color: Colors.white),
-                    labelText: 'Number',
+                    labelText: 'Номер',
                     suffixIcon: IconButton(
                       onPressed: () {
                         setState(() {
@@ -246,7 +245,7 @@ class _MyAppState extends State<MyApp> {
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         labelStyle: TextStyle(color: Colors.white),
-                        labelText: 'Card Owner',
+                        labelText: 'Владелец карты',
                         enabledBorder: OutlineInputBorder(
                           borderSide: BorderSide(color: Colors.white),
                         ),
@@ -283,7 +282,7 @@ class _MyAppState extends State<MyApp> {
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             labelStyle: TextStyle(color: Colors.white),
-                            labelText: 'Date',
+                            labelText: 'Дата',
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.white),
                             ),
@@ -351,10 +350,13 @@ class _MyAppState extends State<MyApp> {
                 width: 350,
                 child: ElevatedButton(
                   onPressed: () {},
-                  child: Text('Add card'),
+                  child: Text('Добавить карту'),
                   style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                       elevation: 10,
-                      primary: Colors.indigoAccent,
+                      primary: Color(0xffA39BFF),
                       textStyle: TextStyle(fontWeight: FontWeight.bold)),
                 ),
               )
