@@ -1,3 +1,4 @@
+import 'package:card_holder_app_with_kistik_love/pages/_add_bank_cardd.dart';
 import 'package:flutter/material.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 import 'package:flutter/widgets.dart';
@@ -260,7 +261,8 @@ class _HomeState extends State<Home> {
                       primary: Color(0xff445671),
                     ),
                     onPressed: () {
-                      Navigator.pushNamed(context, '/addCardBank');
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (_) => add_bank_card()));
                     },
                     child: Row(
                       children: [

@@ -1,3 +1,4 @@
+import 'package:card_holder_app_with_kistik_love/pages/_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -359,11 +360,11 @@ class _addbankcardstate extends State<add_bank_card> {
                 ),
               ),
               Container(
-                //пока не работает
                 width: 350,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.popAndPushNamed(context, '/');
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (_) => Home()));
                   },
                   child: Text('Назад'),
                   style: ElevatedButton.styleFrom(
