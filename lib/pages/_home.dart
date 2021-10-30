@@ -2,6 +2,7 @@ import 'package:card_holder_app_with_kistik_love/pages/_add_bank_cardd.dart';
 import 'package:flutter/material.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 import 'package:flutter/widgets.dart';
+import 'package:card_holder_app_with_kistik_love/widgets/home_drawer.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -135,18 +136,7 @@ class _HomeState extends State<Home> {
           appBar: AppBar(
             backgroundColor: Color(0xFF445671),
           ),
-          drawer: Drawer(
-            child: ListView(
-              children: [
-                DrawerHeader(
-                  decoration: BoxDecoration(
-                    color: Color(0xff2B3647),
-                  ),
-                  child: Text('Header'),
-                ),
-              ],
-            ),
-          ),
+          drawer: HomeDrawer(),
           backgroundColor: Color(0xFF445671),
           resizeToAvoidBottomInset: false,
           body: Container(
