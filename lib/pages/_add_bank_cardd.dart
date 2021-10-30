@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class addBankCard extends StatefulWidget {
+class add_bank_card extends StatefulWidget {
   @override
-  State<addBankCard> createState() => _addBankCardState();
+  State<add_bank_card> createState() => _addbankcardstate();
 }
 
 //for number
@@ -60,7 +60,7 @@ class CustomInputFormatter2 extends TextInputFormatter {
   }
 }
 
-class _addBankCardState extends State<addBankCard> {
+class _addbankcardstate extends State<add_bank_card> {
   String cardholder = 'CARD OWNER';
   String numbercard = '**** **** **** ****';
   String date = '00/00';
@@ -355,6 +355,23 @@ class _addBankCardState extends State<addBankCard> {
                       ),
                       elevation: 10,
                       primary: Color(0xffA39BFF),
+                      textStyle: TextStyle(fontWeight: FontWeight.bold)),
+                ),
+              ),
+              Container(
+                //пока не работает
+                width: 350,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.popAndPushNamed(context, '/');
+                  },
+                  child: Text('Назад'),
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      elevation: 10,
+                      primary: Color(0xffFF7B7B),
                       textStyle: TextStyle(fontWeight: FontWeight.bold)),
                 ),
               )
