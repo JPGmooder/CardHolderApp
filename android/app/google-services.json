@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "441659336938-1cplr1rtadr7khq62ko47pbi1vrfpkme.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tematerbikistik.cardholder",
+            "certificate_hash": "d1a4e825eac6d5a03ecb1219f31fcdfc36e170a3"
+          }
+        },
+        {
           "client_id": "441659336938-2uep84oau1qr6q8jdr41eki3998pp16d.apps.googleusercontent.com",
           "client_type": 3
         }
