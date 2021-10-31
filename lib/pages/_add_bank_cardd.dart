@@ -73,7 +73,6 @@ class _addbankcardstate extends State<add_bank_card> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Карточки',
       home: Scaffold(
         backgroundColor: Color(0xff445671),
         resizeToAvoidBottomInset: false,
@@ -107,13 +106,6 @@ class _addbankcardstate extends State<add_bank_card> {
                                 color: Colors.white,
                               ),
                             ),
-                            // Padding(
-                            //   padding: EdgeInsets.only(left: 200),
-                            // ),
-                            // IconButton(
-                            //   onPressed: () {},
-                            //   icon: Icon(Icons.edit, color: Colors.white),
-                            // ), //фича пока не работает
                           ],
                         ),
                         Text(
