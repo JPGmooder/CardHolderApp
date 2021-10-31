@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+<<<<<<< Updated upstream
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -85,3 +86,5 @@ class _SplashScreenState extends State<SplashScreen> {
 
 
 //for number
+=======
+>>>>>>> Stashed changes
