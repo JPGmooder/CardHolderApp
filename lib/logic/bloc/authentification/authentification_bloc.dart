@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:cardholderapp/logic/bloc/authentification/authentification_events.dart';
-import 'package:cardholderapp/logic/bloc/authentification/authentification_states.dart';
-import 'package:cardholderapp/logic/repository/authentification_repositroy.dart';
+import '../authentification/authentification_events.dart';
+import '../authentification/authentification_states.dart';
+import '../../repository/authentification_repositroy.dart';
 
 class AuthentificationBloc
     extends Bloc<AuthentificationEvent, AuthentificationState> {

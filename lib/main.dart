@@ -1,5 +1,5 @@
-import 'package:cardholderapp/logic/bloc/authentification/authentification_bloc.dart';
-import 'package:cardholderapp/view/authentificationtest.dart';
+import 'package:card_holder_app_with_kistik_love/logic/bloc/authentification/authentification_bloc.dart';
+import '../logic/bloc/authentification/authentification_bloc.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -20,22 +20,9 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Material App',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Material App Bar'),
-        ),
-        body: BlocProvider(
-          create: (context) => AuthentificationBloc(),
-          child: BodyWidget(), // * Тестовый виджет для проверки авторизации
-        ),
-        home: SplashScreen(),
-      ),
-    );
+    return MaterialApp(title: 'Material App', home: SplashScreen());
   }
 }
-<<<<<<< Updated upstream
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -50,8 +37,9 @@ class _SplashScreenState extends State<SplashScreen> {
     // TODO: implement initState
     super.initState();
     Timer(Duration(seconds: 3), () {
-      Navigator.of(context)
-          .pushReplacement(MaterialPageRoute(builder: (_) => Home()));
+      Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (ctx) => BlocProvider(
+              create: (context) => AuthentificationBloc(), child: Home())));
     });
   }
 
@@ -82,9 +70,3 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 }
-
-
-
-//for number
-=======
->>>>>>> Stashed changes

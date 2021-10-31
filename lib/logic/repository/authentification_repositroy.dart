@@ -1,5 +1,5 @@
-import 'package:cardholderapp/data/models/user_model.dart';
-import 'package:cardholderapp/logic/provider/authentification_provider.dart';
+import '../../data/models/user_model.dart';
+import '../provider/authentification_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart' hide User;
 import 'package:google_sign_in/google_sign_in.dart';
 

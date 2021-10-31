@@ -1,4 +1,4 @@
-import 'package:cardholderapp/data/models/user_model.dart' as mainUser;
+import '../../../data/models/user_model.dart' as mainUser;
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class AuthentificationState {}
