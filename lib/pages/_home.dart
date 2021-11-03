@@ -1,8 +1,14 @@
+import 'dart:async';
+
+import 'package:card_holder_app_with_kistik_love/logic/bloc/authentification/authentification_bloc.dart';
+import 'package:card_holder_app_with_kistik_love/logic/bloc/authentification/authentification_states.dart';
 import 'package:card_holder_app_with_kistik_love/widgets/bottom_dialog_window.dart';
 import 'package:flutter/material.dart';
+import 'package:nfc_manager/nfc_manager.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 import 'package:flutter/widgets.dart';
 import 'package:card_holder_app_with_kistik_love/widgets/home_drawer.dart';
+
 import 'package:card_holder_app_with_kistik_love/widgets/card.dart';
 
 class Home extends StatefulWidget {
@@ -11,6 +17,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  bool isAvailable = false;
+  StreamSubscription? nfcChecker;
   List<int> card = [1, 2, 3];
 
   Widget _buildItemList(BuildContext context, int index) {
@@ -21,6 +29,35 @@ class _HomeState extends State<Home> {
         ),
       );
     return cardmaket();
+  }
+
+  Stream<bool> streamGenerator() async* {
+    for (int i = 0; i > -1; i++) {
+      await Future.delayed(const Duration(seconds: 3));
+      yield await NfcManager.instance.isAvailable();
+    }
+  }
+
+  @override
+  void initState() {
+    NfcManager.instance.isAvailable().then((value) => setState(() {
+          isAvailable = value;
+        }));
+
+    nfcChecker = streamGenerator().listen((event) {
+      setState(() {
+        isAvailable = event;
+      });
+    });
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    nfcChecker!.cancel();
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
@@ -37,6 +74,7 @@ class _HomeState extends State<Home> {
           body: Container(
             padding: EdgeInsets.only(bottom: 220),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Padding(
                   padding: EdgeInsets.only(top: 20),
@@ -51,7 +89,9 @@ class _HomeState extends State<Home> {
                   padding: EdgeInsets.only(top: 20),
                 ),
                 Text(
-                  'Поднесите устройство к терминалу',
+                  isAvailable
+                      ? 'Поднесите устройство к терминалу'
+                      : 'NFC недоступно на вашем устройстве или выключено',
                   style: TextStyle(color: Colors.white, fontSize: 15),
                 ),
                 Expanded(

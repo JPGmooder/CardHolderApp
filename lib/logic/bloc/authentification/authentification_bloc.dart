@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:bloc/bloc.dart';
+import 'package:card_holder_app_with_kistik_love/data/models/user_model.dart';
 import '../authentification/authentification_events.dart';
 import '../authentification/authentification_states.dart';
 import '../../repository/authentification_repositroy.dart';
@@ -24,5 +27,10 @@ class AuthentificationBloc
       await AuthentificationRepository.logOut();
       emit.call(Authentification_LogedOut_Via_Google());
     });
+  }
+
+  void logIn()  {
+    add(Authentification_SignIn_Via_Google());
+   // await Future.doWhile( () => state is! Authentification_LogedIn_Via_Google);
   }
 }

@@ -1,4 +1,6 @@
 import 'package:card_holder_app_with_kistik_love/logic/bloc/authentification/authentification_bloc.dart';
+import 'package:card_holder_app_with_kistik_love/logic/bloc/authentification/authentification_states.dart';
+import 'package:nfc_manager/nfc_manager.dart';
 import '../logic/bloc/authentification/authentification_bloc.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -20,7 +22,9 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: 'Material App', home: SplashScreen());
+    return BlocProvider(
+        create: (context) => AuthentificationBloc(),
+        child: MaterialApp(title: 'Material App', home: SplashScreen()));
   }
 }
 
@@ -32,15 +36,26 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  StreamSubscription? sub;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    Timer(Duration(seconds: 3), () {
-      Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (ctx) => BlocProvider(
-              create: (context) => AuthentificationBloc(), child: Home())));
-    });
+    context.read<AuthentificationBloc>().logIn();
+    sub = BlocProvider.of<AuthentificationBloc>(context)
+        .stream
+        .listen((state) => state is Authentification_LogedIn_Via_Google
+            ? Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                    builder: (ctx) => Home(), settings: RouteSettings()),
+              )
+            : null);
+  }
+
+  @override
+  void dispose() {
+    sub!.cancel();
+    super.dispose();
   }
 
   @override
