@@ -1,12 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../../../data/models/user_model.dart' as mainUser;
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class AuthentificationState {}
 
- class AuthentificationInitialState implements AuthentificationState {}
+class AuthentificationInitialState implements AuthentificationState {
+  CollectionReference usersCollection;
+  AuthentificationInitialState(this.usersCollection);
+}
 
- class AuthentificationLoadingState implements AuthentificationState {}
-
+class AuthentificationLoadingState implements AuthentificationState {}
 
 class Authentification_LogedIn_Via_Google implements AuthentificationState {
   mainUser.User loggedUser;
@@ -18,8 +22,6 @@ class Authentification_LogedIn_Via_Google implements AuthentificationState {
 
 class Authentification_LogedOut_Via_Google implements AuthentificationState {
   Authentification_LogedOut_Via_Google() {
-    SharedPreferences.getInstance()
-        .then((value) => value.remove("User"));
-
+    SharedPreferences.getInstance().then((value) => value.remove("User"));
   }
 }

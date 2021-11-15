@@ -6,13 +6,16 @@ class HomeDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+
         children: [
           DrawerHeader(
+            duration: Duration(seconds: 3),
             decoration: BoxDecoration(
               color: Color(0xff2B3647),
             ),
-            child: Text('Header'),
+            child: ListTile(leading: CircleAvatar(),),
           ),
         ],
       ),

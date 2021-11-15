@@ -7,7 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:async';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'pages/_add_bank_cardd.dart';
@@ -20,10 +20,11 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  var usersCollection = FirebaseFirestore.instance.collection("users");
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (context) => AuthentificationBloc(),
+    return MultiBlocProvider(
+        providers: [BlocProvider(create: (context) => AuthentificationBloc(usersCollection))],
         child: MaterialApp(title: 'Material App', home: SplashScreen()));
   }
 }

@@ -1,7 +1,4 @@
 import 'dart:async';
-
-import 'package:card_holder_app_with_kistik_love/logic/bloc/authentification/authentification_bloc.dart';
-import 'package:card_holder_app_with_kistik_love/logic/bloc/authentification/authentification_states.dart';
 import 'package:card_holder_app_with_kistik_love/widgets/bottom_dialog_window.dart';
 import 'package:flutter/material.dart';
 import 'package:nfc_manager/nfc_manager.dart';
@@ -49,14 +46,12 @@ class _HomeState extends State<Home> {
         isAvailable = event;
       });
     });
-    // TODO: implement initState
     super.initState();
   }
 
   @override
   void dispose() {
     nfcChecker!.cancel();
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -80,9 +75,10 @@ class _HomeState extends State<Home> {
                   padding: EdgeInsets.only(top: 20),
                 ),
                 Container(
-                  child: Image.asset(
-                    'img/nfc.png',
-                    color: Colors.white,
+                  child: Stack(
+                    children: [
+                      Image.asset('img/nfc.png', color: Colors.white),
+                    ]
                   ),
                 ),
                 Padding(

@@ -20,6 +20,6 @@ class AuthentificationRepository {
   }
 
   static Future logOut() async {
-   await GoogleSignIn().signOut();
+    await GoogleSignIn().signOut();
   }
 }
