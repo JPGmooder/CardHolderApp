@@ -1,6 +1,11 @@
 import 'dart:async';
+import 'package:rxdart/rxdart.dart';
+import 'package:card_holder_app_with_kistik_love/data/models/user_model.dart';
+import 'package:card_holder_app_with_kistik_love/logic/bloc/authentification/authentification_bloc.dart';
+import 'package:card_holder_app_with_kistik_love/logic/bloc/authentification/authentification_states.dart';
 import 'package:card_holder_app_with_kistik_love/widgets/bottom_dialog_window.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 import 'package:flutter/widgets.dart';
@@ -18,19 +23,28 @@ class _HomeState extends State<Home> {
   StreamSubscription? nfcChecker;
   List<int> card = [1, 2, 3];
 
-  Widget _buildItemList(BuildContext context, int index) {
+  Widget _buildItemList(BuildContext context, int index, BankCards bankCard) {
     if (index == card.length)
       return SafeArea(
         child: Center(
           child: CircularProgressIndicator(),
         ),
       );
-    return cardmaket();
+    return CardWidget(
+      imagePath: bankCard.imagePath,
+      cardholder: bankCard.owner,
+      cvc: bankCard.cvc,
+      date: bankCard.exDate.month.toString() +
+          "/" +
+          bankCard.exDate.year.toString().substring(2, 4),
+      numbercard: bankCard.cardNumber,
+
+    );
   }
 
   Stream<bool> streamGenerator() async* {
     for (int i = 0; i > -1; i++) {
-      await Future.delayed(const Duration(seconds: 3));
+      await Future.delayed(const Duration(seconds: 1));
       yield await NfcManager.instance.isAvailable();
     }
   }
@@ -41,7 +55,7 @@ class _HomeState extends State<Home> {
           isAvailable = value;
         }));
 
-    nfcChecker = streamGenerator().listen((event) {
+    nfcChecker = streamGenerator().distinct().listen((event) {
       setState(() {
         isAvailable = event;
       });
@@ -75,11 +89,9 @@ class _HomeState extends State<Home> {
                   padding: EdgeInsets.only(top: 20),
                 ),
                 Container(
-                  child: Stack(
-                    children: [
-                      Image.asset('img/nfc.png', color: Colors.white),
-                    ]
-                  ),
+                  child: Stack(children: [
+                    Image.asset('img/nfc.png', color: Colors.white),
+                  ]),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 20),
@@ -90,14 +102,28 @@ class _HomeState extends State<Home> {
                       : 'NFC недоступно на вашем устройстве или выключено',
                   style: TextStyle(color: Colors.white, fontSize: 15),
                 ),
-                Expanded(
-                  child: ScrollSnapList(
-                    itemBuilder: _buildItemList,
-                    itemCount: card.length,
-                    itemSize: 350,
-                    dynamicItemSize: true,
-                    onItemFocus: (int) {},
-                  ),
+                BlocBuilder<AuthentificationBloc, AuthentificationState>(
+                  builder: (context, state) {
+                    return state is Authentification_LogedIn_Via_Google
+                        ? Expanded(
+                            child: state.loggedUser.usersBankCards == null
+                                ? Text(
+                                    "Добавленных карт нет") // TODO добавить болванку, отображающую отсутствие карт.
+                                : ScrollSnapList(
+                                    itemBuilder: (ctx, index) => _buildItemList(
+                                        ctx,
+                                        index,
+                                        state
+                                            .loggedUser.usersBankCards![index]),
+                                    itemCount:
+                                        state.loggedUser.usersBankCards!.length,
+                                    itemSize: 350,
+                                    dynamicItemSize: true,
+                                    onItemFocus: (int) {},
+                                  ),
+                          )
+                        : Container();
+                  },
                 ),
               ],
             ),

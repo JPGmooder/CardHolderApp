@@ -2,6 +2,9 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:card_holder_app_with_kistik_love/data/models/user_model.dart';
+import 'package:card_holder_app_with_kistik_love/logic/database_checks.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 import '../authentification/authentification_events.dart';
 import '../authentification/authentification_states.dart';
 import '../../repository/authentification_repositroy.dart';
@@ -17,15 +20,21 @@ class AuthentificationBloc
         emit.call(AuthentificationLoadingState());
         var loggedUser = await AuthentificationRepository.loginUser();
         if (loggedUser == null) throw Exception();
-        var usersDoc = usersCollections.doc(loggedUser.id);
+
+        var usersDoc = usersCollections.doc(loggedUser
+            .id); //* Получаем запись в таблице на пользователя по его id (Если записи нет - null)
         // TODO Сделать имплементацию ошибок через создание кастомных, пока оставлю как есть;
-        if (await checkIfDocumentExist(usersDoc) == false) {
-          usersDoc.set(loggedUser.toMapForDB());
+        if (await DatabaseChecks.checkIfDocumentExist(usersDoc) ==
+            false) //* Проверка есть ли запись
+        {
+          usersDoc.set(loggedUser.toMapForDB()); //* Добавление новой записи
         } else {
-          var Cards = await getUsersCards(usersDoc);
-          print(Cards);
-          loggedUser.usersBankCards = Cards[0];
-          loggedUser.usersMarkedCards = Cards[1]; // TODO Переделать
+          var _cards = await DatabaseChecks.getUsersCards(
+              usersDoc); //* Получаем карты пользователя мапой
+
+          loggedUser.usersBankCards = _cards[DatabaseChecks.dbBankCardsName];
+          loggedUser.usersMarkedCards =
+              _cards[DatabaseChecks.dbMarketCardsName]; // TODO Переделать
         }
         emit.call(Authentification_LogedIn_Via_Google(loggedUser));
       } catch (error) {
@@ -41,36 +50,8 @@ class AuthentificationBloc
     });
   }
 
-  Future<List<dynamic>> getUsersCards(DocumentReference usersDoc) async {
-    var fetchedData = await usersDoc.get();
-    var convertedData = fetchedData.data() as Map<String, dynamic>;
-    List<BankCards> usersBankCards =
-        (convertedData['usersBankCards'] as List<dynamic>? ?? [])
-            .map((e) => BankCards.fromMap(e))
-            .toList();
-    List<MarketCards> usersDiscountCards =
-        (convertedData['usersMarkedCards'] as List<dynamic>? ?? [])
-            .map((e) => MarketCards.fromMap(e))
-            .toList();
-    return [usersBankCards, usersDiscountCards];
-  }
-
   void logIn() {
     add(Authentification_SignIn_Via_Google());
     // await Future.doWhile( () => state is! Authentification_LogedIn_Via_Google);
-  }
-
-  static Future<bool> checkIfDocumentExist(
-      DocumentReference usersCollection) async {
-    try {
-      bool exists = false;
-      await usersCollection.get().then((doc) {
-        exists = doc.exists;
-      });
-      return exists;
-    } catch (e) {
-      // If any error
-      return false;
-    }
   }
 }

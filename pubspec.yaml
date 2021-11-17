@@ -32,12 +32,14 @@ dependencies:
   cupertino_icons: ^1.0.2
   firebase_auth: ^3.1.4
   firebase_core: ^1.8.0
+  firebase_storage: ^10.1.0
   flutter:
     sdk: flutter
   flutter_bloc: ^7.3.1
   google_sign_in: ^5.2.1
   image_picker: ^0.8.4+4
   nfc_manager: ^3.1.0
+  rxdart: ^0.27.2
   scroll_snap_list: ^0.8.4
   shared_preferences: ^2.0.8
 
